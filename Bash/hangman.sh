@@ -3,51 +3,51 @@
 
 #set -x
 
-#pobieranie słowa z zewnętrznego API
+#fetching word from external API
 word=$(curl -s https://random-word-api.herokuapp.com/word | tr -d '"[]')
-#odkomentować żeby łatwiej było przetestować działanie programu
+#uncomment the line below to make it easier to test the program
 #echo $word
 
-#sprawdzanie długości słowa
+#word length check
 length=${#word}
 
-#inicjalizacja zmiennej dla zgadywanego słowa, gdzie nieodgadnięte jeszcze litery są zastąpione znakiem '-'
+#initialization of the variable for the guessed word, where not yet guessed letters are replaced with '-'
 guessed_word=`echo -n "$word" | sed 's/./-/g'`
 
-#ustawienie liczby szans
+#set the number of chances
 chances=7
-#inicializacja zmiennej dla odgadniętych już liter
+#variable initialization for already guessed letters
 guessed_letters=''
 
-#wypisanie zgadywanego słowa, gdzie wszystkie litery są zastąpione '-', jednakże informuje to o ilości znaków
-echo "Odgadywane slowo: $guessed_word"
+#print the guessed word, where all letters are replaced with '-', however, it informs about the number of characters
+echo "Guessed word: $guessed_word"
 
-#pętla wykonująca sie do momentu aż nasze szanse na odgadnięcie słowa nie spadną do 0 oraz słowo nie zostało właśnie odgadnięte
+#loop that executes until our chance of guessing the word drops to 0 and the word has not just been guessed
 while [ $chances -gt 0 ] && [ $guessed_word != $word ]
 do
-  #pobieranie od użytkownika litery z klawiatury, jednakże należy litery podawać pojedynczo oraz nie można odgadnąć od razu hasła tylko jeśli już wiemy co to za słowo podajemy jego litery pojedynczo
-  read -p "Podaj litere: " letter
+  #reading a letter from the keyboard from the user, however, the letters should be entered one at a time and the password cannot be guessed right away, only if we already know what the word is, enter its letters one at a time
+  read -p "Enter the letter: " letter
 
-  #sprawdzenie czy podana przez nas litera nie została już uprzednio sprawdzana
+  #checking whether the letter we provided has not already been checked
   if [[ $guessed_letters == *"$letter"* ]]; then
-    echo "Juz podawales te litere"
+    echo "You've already given these letters"
   else
-    #sprawdzanie czy podana przez nas litera znajduje się w słowie
+    #checking if the given letter is in the word
     if [[ $word == *"$letter"* ]]; then
-      #pętla znajdująca pozycję litery w słowie, oczywiście jeśli ta się w nim znajduje
+      #a loop that finds the position of a letter in a word, of course if it is in it
       for (( i=0; i<$length; i++ ))
       do
-        #uzyskanie litery znajdującej się na pozycji i, aby później móc sprawdzić czy jest ona taka jak wpisana przez nas litera
+        #getting the letter in position i, to be able to check later if it is the same as the letter we typed
         char=${word:i:1}
 
         if [ "$letter" == "$char" ]; then
-          #zastąpienie '-' podaną przez nas literą w miejscu gdzie w odgadywanym słowie się ta znajduje
+          #replacing '-' with a given letter in the place where it is in the guessed word
           guessed_word=${guessed_word:0:i}$letter${guessed_word:i+1}
         fi
       done
     else
 
-      #zmniejszenie szansy o 1 w przypadku błędnej litery
+      #reducing the chance by 1 in case of a wrong letter
       chances=$((chances-1))
       if [ $chances -eq 7 ]; then
 echo "
@@ -138,20 +138,20 @@ _______
 
 "
 fi
-echo "Błędna litera, pozostało $chances szans "
+echo "Wrong letter, $chances left "
     fi
   fi
-  #dodanie litery do już odgadniętych
+  #adding a letter to those already guessed
   guessed_letters=$guessed_letters$letter
 
-  echo "Odgadywane slowo: $guessed_word"
+  echo "Guessed word: $guessed_word"
 
 done
 
-#sprawdzenie czy ilość szans jest równa 0
+#check if the number of chances is equal to 0
 if [ $chances -eq 0 ]; then
-  #wypisanie komunikatu o przegranej z powodu braku szans lub o wygranej w przypadku odgadnięcia przez nas słowa
-    echo "Przegrales! Odgadywane slowo to: $word"
+  #writing a message about losing due to lack of chances or about winning if we guess the word
+    echo "You lost! The guessed word is: $word"
 else
-  echo "Wygrana! Odgadłeś słowo: $word"
+  echo "Win! You guessed the word: $word"
 fi
