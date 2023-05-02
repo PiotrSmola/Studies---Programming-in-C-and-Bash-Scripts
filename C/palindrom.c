@@ -29,7 +29,7 @@ bool palindrome(char tab[], int size)
 
 void print_palindrome(char *array, int size)
 {
-    FILE *f = fopen("dst_gr4.txt", "a+");
+    FILE *f = fopen("file1.txt", "a+");
     if (f == NULL)
     {
         printf("blad\n");
