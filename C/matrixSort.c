@@ -55,15 +55,15 @@ int main() {
   matrix[3][1] = 1.0;
   matrix[3][2] = 3.0;
 
-  printf("Przed sortowaniem:\n");
+  printf("Before sorting:\n");
   print_matrix(matrix, rows, columns);
 
   sort_by_column(matrix, rows, columns, 0);
-  printf("Po sortowaniu z wyborem 1 kolumny:\n");
+  printf("After sorting with first column selection:\n");
   print_matrix(matrix, rows, columns);
 
   sort_by_column(matrix, rows, columns, 2);
-  printf("Po sortowaniu z wyborem 2 kolumny:\n");
+  printf("After sorting with second column selection:\n");
   print_matrix(matrix, rows, columns);
 
   free_2d_array(matrix, rows);
