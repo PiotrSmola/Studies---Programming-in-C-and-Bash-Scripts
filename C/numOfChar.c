@@ -7,7 +7,7 @@ int countk(char a[30])
     for (int i = 0; i < sizeof(a); i++)
 {
     char sign[1] = {a[i]};
-   if (a[i] == 'k')
+   if (a[i] == 'k') //change to the letter you are looking for
 {
     ilosc++;
 }
@@ -19,7 +19,7 @@ void main()
 {
 char a[30];
 
-printf("Podaj ciąg znaków\n");
+printf("Enter a string\n");
 scanf("%[^\n]s", &a);
-printf("Ilość liter k w łańcuchu: %i", countk(a));
+printf("The number of k letters in the string: %i", countk(a));
 }
